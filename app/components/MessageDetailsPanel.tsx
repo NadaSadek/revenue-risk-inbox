@@ -10,7 +10,7 @@ export function MessageDetailsPanel({
   return (
     <div className="fixed inset-0 z-50">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <aside className="absolute inset-y-0 right-0 w-full max-w-md bg-white shadow-xl">
+      <aside className="absolute inset-y-0 right-0 w-full max-w-2xl bg-white shadow-xl">
         <button
           type="button"
           onClick={onClose}
@@ -21,13 +21,14 @@ export function MessageDetailsPanel({
         </button>
 
         <div className="h-full overflow-y-auto p-6 pt-14">
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm mb-4">
             From: {message.customerName} at {message.companyName}
           </p>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm text-gray-600 mb-6">
             Received: {new Date(message.receivedAt).toLocaleString()}
           </p>
           <div className="bg-gray-50 p-4 rounded">
+            <h2 className="text-lg font-semibold mb-2">{message.subject}</h2>
             <p>{message.body}</p>
           </div>
         </div>
