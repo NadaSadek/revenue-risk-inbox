@@ -15,7 +15,6 @@ export default function InboxTable() {
 
   const onClosePanel = () => {
     setSelectedMessageId(null);
-    setAnalysisByMessageId({});
   };
 
   const enrichedMessages: (SupportMessage & { analysis?: RevenueRiskAnalysis })[] =
