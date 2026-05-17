@@ -15,8 +15,7 @@ export function MessageDetailsPanel({
           type="button"
           onClick={onClose}
           aria-label="Close panel"
-          className="absolute right-4 top-4 rounded-md p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400"
-        >
+          className="absolute right-4 top-4 rounded-md p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400">
           ✕
         </button>
 
