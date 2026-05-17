@@ -77,7 +77,7 @@ export default function InboxTable() {
                         event.stopPropagation();
                         setSelectedMessageId(message.id);
                       }}
-                      className="cursor-pointer block max-w-md rounded-sm text-left font-medium text-slate-900">
+                      className="block max-w-md cursor-pointer rounded-sm text-left font-medium text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400">
                       {message.subject}
                       <span className="sr-only">
                         Open message details for {message.customerName} at {message.companyName}
