@@ -1,3 +1,5 @@
+import { RevenueRiskAnalysis } from "./types";
+
 export const categoryLabel = {
   failed_payment: "Failed Payment",
   invoice_issue: "Invoice Issue",
@@ -9,17 +11,16 @@ export const categoryLabel = {
   account_issue: "Account Issue",
   product_feedback: "Product Feedback",
   other: "Other",
-} as const;
+} as const satisfies Record<RevenueRiskAnalysis["category"], string>;
 
 export const revenueRiskLabel = {
-  none: "None",
   low: "Low",
   medium: "Medium",
   high: "High",
-} as const;
+} as const satisfies Record<RevenueRiskAnalysis["revenueRisk"], string>;
 
 export const urgencyLabel = {
   low: "Low",
   medium: "Medium",
   high: "High",
-} as const;
+} as const satisfies Record<RevenueRiskAnalysis["urgency"], string>;
