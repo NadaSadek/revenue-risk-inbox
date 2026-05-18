@@ -4,7 +4,7 @@ export const supportRequestSchema = z.object({
   id: z.string().min(1),
   customerName: z.string().min(1),
   companyName: z.string().min(1),
-  receivedAt: z.string().datetime(),
+  receivedAt: z.iso.datetime(),
   subject: z.string().min(1),
   body: z.string().min(1),
 });
@@ -35,12 +35,12 @@ export const revenueRiskAnalysisSchema = z.object({
       "One concise sentence summarizing the customer issue and its business impact. Do not invent facts that are not present in the message."
     ),
   recommendedAction: z
-  .string()
-  .min(20)
-  .max(180)
-  .describe(
-    "One complete sentence in plain English. State the single next best operational action. Keep it under 180 characters. Do not use semicolons, bullet points, slashes, or multi-step explanations. End with a period."
-  ),
+    .string()
+    .min(20)
+    .max(180)
+    .describe(
+      "One complete sentence in plain English. State the single next best operational action. Keep it under 180 characters. Do not use semicolons, bullet points, slashes, or multi-step explanations. End with a period."
+    ),
   evidence: z
     .array(z.string())
     .min(1)

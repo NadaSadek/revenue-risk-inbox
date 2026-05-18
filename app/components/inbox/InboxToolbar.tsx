@@ -35,7 +35,7 @@ export default function InboxToolbar({
         {!isAnalyzing && analysisError && <span className="text-red-700">{analysisError}</span>}
         {!isAnalyzing && !analysisError && supportRequestsCount > 0 && (
           <span>
-            {analyzedCount} of {supportRequestsCount} support messages have been analyzed.
+            {analyzedCount} of {supportRequestsCount} support messages analyzed.
           </span>
         )}
       </div>

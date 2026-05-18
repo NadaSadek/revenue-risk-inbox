@@ -37,7 +37,6 @@ export function useAnalyzeSupportRequests(): UseAnalyzeSupportRequestsResult {
         throw new Error("Failed to analyze support requests.");
       }
 
-
       const data = await response.json();
       const parsed = analyzeSupportRequestsResponseSchema.parse(data);
       return Object.fromEntries(parsed.analyses.map((analysis) => [analysis.messageId, analysis]));
