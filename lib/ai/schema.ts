@@ -35,11 +35,12 @@ export const revenueRiskAnalysisSchema = z.object({
       "One concise sentence summarizing the customer issue and its business impact. Do not invent facts that are not present in the message."
     ),
   recommendedAction: z
-    .string()
-    .max(280)
-    .describe(
-      "The next best operational action for a support, billing, or customer success teammate. Be specific and practical. Do not give generic advice like 'look into it' unless no better action is possible."
-    ),
+  .string()
+  .min(20)
+  .max(180)
+  .describe(
+    "One complete sentence in plain English. State the single next best operational action. Keep it under 180 characters. Do not use semicolons, bullet points, slashes, or multi-step explanations. End with a period."
+  ),
   evidence: z
     .array(z.string())
     .min(1)
@@ -57,7 +58,7 @@ export const revenueRiskAnalysisSchema = z.object({
   needsHumanReview: z
     .boolean()
     .describe(
-      "True if confidence is below 0.7, revenueRisk is high, the customer is threatening cancellation, requesting a refund, disputing an invoice, or reporting paid access being blocked."
+      "True if confidence is below 0.7, revenueRisk is high, the customer is threatening cancellation, requesting a refund, or reporting paid access being blocked."
     ),
   category: z
     .enum([
