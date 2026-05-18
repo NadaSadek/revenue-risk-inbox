@@ -80,3 +80,7 @@ export const revenueRiskAnalysisSchema = z.object({
 export const supportRequestsResponseSchema = z.object({
   supportRequests: z.array(supportRequestSchema),
 });
+
+export const analyzeSupportRequestsResponseSchema = z.object({
+  analyses: z.array(revenueRiskAnalysisSchema),
+});

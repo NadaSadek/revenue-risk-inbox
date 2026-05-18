@@ -4,6 +4,11 @@ import { analyzeSupportRequestsBodySchema } from "@/lib/ai/schema";
 
 export async function POST(request: Request) {
   try {
+    
+    if (!process.env.AI_GATEWAY_API_KEY) {
+      return NextResponse.json({ error: "Missing AI Gateway API key." }, { status: 500 });
+    }
+
     const body = await request.json();
     const result = analyzeSupportRequestsBodySchema.safeParse(body);
 
