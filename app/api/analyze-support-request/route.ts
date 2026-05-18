@@ -19,17 +19,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ analyses });
   } catch (error) {
     if (error instanceof SyntaxError) {
-      return NextResponse.json(
-        { error: "Invalid JSON payload." },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Invalid JSON payload." }, { status: 400 });
     }
 
     console.error("Failed to analyze support requests", error);
 
-    return NextResponse.json(
-      { error: "Failed to analyze support requests." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to analyze support requests." }, { status: 500 });
   }
 }

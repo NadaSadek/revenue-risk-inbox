@@ -51,7 +51,7 @@ export function useGetSupportRequests(): UseGetSupportRequestsResult {
       controller.abort();
     };
   }, []);
-  
+
   return {
     supportRequests,
     isLoading,
