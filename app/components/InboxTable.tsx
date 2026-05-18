@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { MessageDetailsPanel } from "./MessageDetailsPanel";
 import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
-import { mockAnalysisByMessageId } from "@/lib/mock-analysis";
 import { revenueRiskLabel, urgencyLabel } from "@/lib/constants";
 import { useGetSupportRequests } from "@/app/hooks/useGetSupportRequests";
+import { useAnalyzeSupportRequests } from "@/app/hooks/useAnalyzeSupportRequests";
 
 export default function InboxTable() {
   const [selectedMessageId, setSelectedMessageId] = useState<SupportRequest["id"] | null>(null);
@@ -18,6 +18,18 @@ export default function InboxTable() {
     isLoading: isLoadingSupportRequests,
     error: supportRequestsError,
   } = useGetSupportRequests();
+
+  const { analyzeSupportRequests, isAnalyzing, error: analysisError } = useAnalyzeSupportRequests();
+
+  async function handleAnalyzeMessages() {
+    const analysesByMessageId = await analyzeSupportRequests(supportRequests.slice(0, 5));
+
+    if (!analysesByMessageId) {
+      return;
+    }
+
+    setAnalysisByMessageId(analysesByMessageId);
+  }
 
   const onClosePanel = () => {
     setSelectedMessageId(null);
@@ -56,10 +68,17 @@ export default function InboxTable() {
       )}
       <button
         type="button"
+        disabled={isAnalyzing || supportRequests.length === 0}
         className="mb-4 inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-        onClick={() => setAnalysisByMessageId(mockAnalysisByMessageId)}>
-        Analyze Messages
+        onClick={() => handleAnalyzeMessages()}>
+        {isAnalyzing ? "Analyzing batch" : "Analyze Batch (max 5)"}
       </button>
+      {isAnalyzing && (
+        <p className="mb-4 text-sm text-slate-600">
+          Running AI analysis for the current batch. This may take a moment.
+        </p>
+      )}
+      {analysisError && <p className="mb-4 text-sm text-red-700">{analysisError}</p>}
       <div className="overflow-x-auto">
         <table className="min-w-full border border-slate-200">
           <thead>

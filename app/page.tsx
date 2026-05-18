@@ -1,4 +1,4 @@
-import InboxTable from "./components/InboxTable";
+import InboxTable from "@/app/components/InboxTable";
 
 export default function Home() {
   return (
