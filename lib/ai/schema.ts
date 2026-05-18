@@ -76,3 +76,7 @@ export const revenueRiskAnalysisSchema = z.object({
       "Primary category of the customer message. Choose the most commercially relevant category when multiple apply. Use other only when none of the listed categories fit."
     ),
 });
+
+export const supportRequestsResponseSchema = z.object({
+  supportRequests: z.array(supportRequestSchema),
+});

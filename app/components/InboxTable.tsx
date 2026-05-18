@@ -1,33 +1,50 @@
 "use client";
 
 import { useState } from "react";
-import { type SupportMessage, supportMessages } from "../../lib/sample-data/messages";
 import { MessageDetailsPanel } from "./MessageDetailsPanel";
-import type { RevenueRiskAnalysis } from "@/lib/types";
+import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
 import { mockAnalysisByMessageId } from "@/lib/mock-analysis";
 import { revenueRiskLabel, urgencyLabel } from "@/lib/constants";
+import { useGetSupportRequests } from "@/app/hooks/useGetSupportRequests";
 
 export default function InboxTable() {
-  const [selectedMessageId, setSelectedMessageId] = useState<SupportMessage["id"] | null>(null);
+  const [selectedMessageId, setSelectedMessageId] = useState<SupportRequest["id"] | null>(null);
   const [analysisByMessageId, setAnalysisByMessageId] = useState<
-    Partial<Record<SupportMessage["id"], RevenueRiskAnalysis>>
+    Partial<Record<SupportRequest["id"], RevenueRiskAnalysis>>
   >({});
+
+  const {
+    supportRequests,
+    isLoading: isLoadingSupportRequests,
+    error: supportRequestsError,
+  } = useGetSupportRequests();
 
   const onClosePanel = () => {
     setSelectedMessageId(null);
   };
 
-  const enrichedMessages: (SupportMessage & { analysis?: RevenueRiskAnalysis })[] =
-    supportMessages.map((message) => ({
-      ...message,
-      analysis: analysisByMessageId[message.id],
+  const enrichedSupportRequests: (SupportRequest & { analysis?: RevenueRiskAnalysis })[] =
+    supportRequests.map((request) => ({
+      ...request,
+      analysis: analysisByMessageId[request.id],
     }));
 
   const selectedAnalysis = selectedMessageId
     ? (analysisByMessageId[selectedMessageId] ?? null)
     : null;
 
-  const selectedMessage = supportMessages.find((m) => m.id === selectedMessageId);
+  const selectedMessage = supportRequests.find((m) => m.id === selectedMessageId);
+
+  if (isLoadingSupportRequests) {
+    return <div className="p-4 text-sm text-slate-600">Loading support requests...</div>;
+  }
+
+  if (supportRequestsError) {
+    return (
+      <div className="p-4 text-sm text-red-700">Something went wrong. Please try again later!</div>
+    );
+  }
+
   return (
     <div className="p-4">
       {selectedMessage && (
@@ -58,34 +75,34 @@ export default function InboxTable() {
             </tr>
           </thead>
           <tbody>
-            {enrichedMessages.map((message) => {
-              const urgency = message.analysis ? urgencyLabel[message.analysis.urgency] : "-";
-              const revenueRisk = message.analysis
-                ? revenueRiskLabel[message.analysis.revenueRisk]
+            {enrichedSupportRequests.map((request) => {
+              const urgency = request.analysis ? urgencyLabel[request.analysis.urgency] : "-";
+              const revenueRisk = request.analysis
+                ? revenueRiskLabel[request.analysis.revenueRisk]
                 : "-";
               return (
                 <tr
-                  key={message.id}
-                  onClick={() => setSelectedMessageId(message.id)}
+                  key={request.id}
+                  onClick={() => setSelectedMessageId(request.id)}
                   className={`cursor-pointer border-b border-slate-200 hover:bg-slate-50 ${
-                    selectedMessageId === message.id ? "bg-slate-100" : ""
+                    selectedMessageId === request.id ? "bg-slate-100" : ""
                   }`}>
                   <td className="px-4 py-3 text-slate-600">
                     <button
                       type="button"
                       onClick={(event) => {
                         event.stopPropagation();
-                        setSelectedMessageId(message.id);
+                        setSelectedMessageId(request.id);
                       }}
                       className="block max-w-md cursor-pointer rounded-sm text-left font-medium text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400">
-                      {message.subject}
+                      {request.subject}
                       <span className="sr-only">
-                        Open message details for {message.customerName} at {message.companyName}
+                        Open message details for {request.customerName} at {request.companyName}
                       </span>
                     </button>
                   </td>
-                  <td className="px-4 py-3 text-sm text-slate-600">{message.customerName}</td>
-                  <td className="px-4 py-3 text-sm text-slate-600">{message.companyName}</td>
+                  <td className="px-4 py-3 text-sm text-slate-600">{request.customerName}</td>
+                  <td className="px-4 py-3 text-sm text-slate-600">{request.companyName}</td>
                   <td className="px-4 py-3 text-sm text-slate-600">
                     <span className="rounded-full bg-slate-100 px-2 py-1 font-medium">
                       {urgency}
@@ -98,10 +115,10 @@ export default function InboxTable() {
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-600">Not reviewed</td>
                   <td className="px-4 py-3 text-sm text-slate-600">
-                    {message.analysis ? "Analyzed" : "Not analyzed"}
+                    {request.analysis ? "Analyzed" : "Not analyzed"}
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-600">
-                    {new Date(message.receivedAt).toLocaleString()}
+                    {new Date(request.receivedAt).toLocaleString()}
                   </td>
                 </tr>
               );

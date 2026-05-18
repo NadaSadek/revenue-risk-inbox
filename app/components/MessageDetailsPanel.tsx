@@ -1,7 +1,6 @@
 "use client";
 
-import type { RevenueRiskAnalysis } from "@/lib/types";
-import type { SupportMessage } from "@/lib/sample-data/messages";
+import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
 import AIAnalysis from "./AIAnalysis";
 import ReviewActions from "./ReviewActions";
 import { useEffect } from "react";
@@ -11,7 +10,7 @@ export function MessageDetailsPanel({
   onClose,
   analysis,
 }: {
-  message: SupportMessage;
+  message: SupportRequest;
   analysis: RevenueRiskAnalysis | null;
   onClose: () => void;
 }) {
