@@ -1,12 +1,11 @@
 import "server-only";
 
-import type { SupportMessage } from "../sample-data/messages";
 import { generateText, Output } from "ai";
 import { revenueRiskAnalysisSchema } from "./schema";
-import type { RevenueRiskAnalysis } from "./schema";
+import type { RevenueRiskAnalysis, SupportRequest } from "../types";
 
 export async function analyzeSupportRequests(
-  supportRequests: SupportMessage[]
+  supportRequests: SupportRequest[]
 ): Promise<RevenueRiskAnalysis[]> {
   const { output } = await generateText({
     model: "openai/gpt-5-mini",

@@ -1,7 +1,8 @@
-import { RevenueRiskAnalysis } from "./types";
+import type { RevenueRiskAnalysis } from "./types";
 
 export const mockAnalysisByMessageId: Record<string, RevenueRiskAnalysis> = {
   msg_001: {
+    messageId: "msg_001",
     summary:
       "Customer reports a failed renewal payment and needs help restoring billing continuity.",
     category: "failed_payment",
@@ -14,9 +15,7 @@ export const mockAnalysisByMessageId: Record<string, RevenueRiskAnalysis> = {
       "nothing changed on our side",
       "please help us avoid losing access",
     ],
-    suggestedNextAction:
+    recommendedAction:
       "Route to billing support and check the failed renewal payment, retry status and account access risk.",
-    suggestedResponse:
-      "Thanks for flagging this. We will check the renewal payment and make sure your account access is not interrupted while we investigate.",
   },
 };

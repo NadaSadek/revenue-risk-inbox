@@ -1,6 +1,23 @@
 import { z } from "zod";
 
+export const supportRequestSchema = z.object({
+  id: z.string().min(1),
+  customerName: z.string().min(1),
+  companyName: z.string().min(1),
+  receivedAt: z.string().datetime(),
+  subject: z.string().min(1),
+  body: z.string().min(1),
+});
+
+export const analyzeSupportRequestsBodySchema = z.object({
+  supportRequests: z.array(supportRequestSchema).min(1).max(20),
+});
+
 export const revenueRiskAnalysisSchema = z.object({
+  messageId: z
+    .string()
+    .min(1)
+    .describe("The id of the support request this analysis belongs to. Echo the input id exactly."),
   urgency: z
     .enum(["low", "medium", "high"])
     .describe(
@@ -59,6 +76,3 @@ export const revenueRiskAnalysisSchema = z.object({
       "Primary category of the customer message. Choose the most commercially relevant category when multiple apply. Use other only when none of the listed categories fit."
     ),
 });
-
-
-export type RevenueRiskAnalysis = z.infer<typeof revenueRiskAnalysisSchema>;

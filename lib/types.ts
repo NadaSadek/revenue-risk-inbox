@@ -1,21 +1,10 @@
-export type RevenueRiskAnalysis = {
-  summary: string;
-  category:
-    | "failed_payment"
-    | "invoice_issue"
-    | "plan_access"
-    | "cancellation_risk"
-    | "refund_request"
-    | "enterprise_sales"
-    | "product_bug"
-    | "account_issue"
-    | "product_feedback"
-    | "other";
-  revenueRisk: "none" | "low" | "medium" | "high";
-  urgency: "low" | "medium" | "high";
-  confidence: number;
-  needsHumanReview: boolean;
-  evidence: string[];
-  suggestedNextAction?: string;
-  suggestedResponse?: string;
-};
+import { z } from "zod";
+import {
+  supportRequestSchema,
+  analyzeSupportRequestsBodySchema,
+  revenueRiskAnalysisSchema,
+} from "./ai/schema";
+
+export type SupportRequest = z.infer<typeof supportRequestSchema>;
+export type AnalyzeSupportRequestsBody = z.infer<typeof analyzeSupportRequestsBodySchema>;
+export type RevenueRiskAnalysis = z.infer<typeof revenueRiskAnalysisSchema>;

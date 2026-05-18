@@ -48,16 +48,9 @@ export default function AIAnalysis({ analysis }: { analysis: RevenueRiskAnalysis
       </div>
 
       <div>
-        <h3 className="text-base font-semibold text-slate-700">Suggested Next Action</h3>
+        <h3 className="text-base font-semibold text-slate-700">Recommended Action</h3>
         <p className="mt-1 rounded-md bg-slate-50 p-3 text-sm text-slate-700">
-          {analysis.suggestedNextAction}
-        </p>
-      </div>
-
-      <div>
-        <h3 className="text-base font-semibold text-slate-700">Suggested response</h3>
-        <p className="mt-1 rounded-md bg-slate-50 p-3 text-sm text-slate-700">
-          {analysis.suggestedResponse ?? "No suggested response. Human review recommended."}
+          {analysis.recommendedAction}
         </p>
       </div>
     </div>
