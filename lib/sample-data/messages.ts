@@ -1,4 +1,6 @@
-import type { SupportRequest } from "../types";
+import "server-only";
+
+import type { SupportRequest } from "@/lib/types";
 
 export const supportMessages = [
   {
@@ -81,6 +83,4 @@ export const supportMessages = [
     subject: "Payment, access, and plan confusion",
     body: "Hi, I am not sure what happened. We upgraded to the Growth plan yesterday, the payment appeared to go through, but some teammates still see the old limits while others are locked out completely. Our billing page also shows two pending invoices. Can someone check whether the upgrade actually completed?",
   },
-] as const satisfies SupportRequest[];
-
-export type SupportMessage = (typeof supportMessages)[number];
+] satisfies SupportRequest[];
