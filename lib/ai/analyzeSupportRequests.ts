@@ -3,6 +3,7 @@ import "server-only";
 import { generateText, Output } from "ai";
 import { revenueRiskAnalysisSchema } from "./schema";
 import type { RevenueRiskAnalysis, SupportRequest } from "../types";
+import { orderAnalysesBySupportRequestIds } from "./orderAnalysesBySupportRequestIds";
 
 export async function analyzeSupportRequests(
   supportRequests: SupportRequest[]
@@ -29,25 +30,5 @@ Rules:
 `,
   });
 
-  const outputById = new Map(output.map((analysis) => [analysis.messageId, analysis]));
-
-  if (outputById.size !== output.length) {
-    throw new Error("AI analysis response contained duplicate message ids.");
-  }
-
-  if (output.length !== supportRequests.length) {
-    throw new Error("AI analysis response did not match the number of support requests.");
-  }
-
-  const orderedOutput = supportRequests.map((request) => {
-    const analysis = outputById.get(request.id);
-
-    if (!analysis) {
-      throw new Error(`AI analysis response is missing message id: ${request.id}`);
-    }
-
-    return analysis;
-  });
-
-  return orderedOutput;
+  return orderAnalysesBySupportRequestIds(supportRequests, output);
 }
