@@ -1,14 +1,14 @@
 "use client";
 
-const ANALYSIS_BATCH_SIZE = 5;
-
 import { useState } from "react";
 import { MessageDetailsPanel } from "@/app/components/MessageDetailsPanel";
 import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
-import { useGetSupportRequests } from "@/app/hooks/useGetSupportRequests";
+import { useSupportRequests } from "@/app/hooks/useSupportRequests";
 import { useAnalyzeSupportRequests } from "@/app/hooks/useAnalyzeSupportRequests";
 import InboxToolbar from "@/app/components/inbox/InboxToolbar";
 import InboxTable, { type SupportRequestRow } from "@/app/components/inbox/InboxTable";
+
+const ANALYSIS_BATCH_SIZE = 5;
 
 export default function InboxView() {
   const [selectedMessageId, setSelectedMessageId] = useState<SupportRequest["id"] | null>(null);
@@ -20,20 +20,33 @@ export default function InboxView() {
     supportRequests,
     isLoading: isLoadingSupportRequests,
     error: supportRequestsError,
-  } = useGetSupportRequests();
+  } = useSupportRequests();
 
   const { analyzeSupportRequests, isAnalyzing, error: analysisError } = useAnalyzeSupportRequests();
 
+  const unanalyzedSupportRequests = supportRequests.filter(
+    (request) => !analysisByMessageId[request.id]
+  );
+
+  const analysisBatch = unanalyzedSupportRequests.slice(0, ANALYSIS_BATCH_SIZE);
+
+  const analyzedCount = supportRequests.length - unanalyzedSupportRequests.length;
+
   const handleAnalyzeMessages = async () => {
-    const analysesByMessageId = await analyzeSupportRequests(
-      supportRequests.slice(0, ANALYSIS_BATCH_SIZE)
-    );
+    if (analysisBatch.length === 0) {
+      return;
+    }
+
+    const analysesByMessageId = await analyzeSupportRequests(analysisBatch);
 
     if (!analysesByMessageId) {
       return;
     }
 
-    setAnalysisByMessageId(analysesByMessageId);
+    setAnalysisByMessageId((current) => ({
+      ...current,
+      ...analysesByMessageId,
+    }));
   };
 
   const onClosePanel = () => {
@@ -49,7 +62,7 @@ export default function InboxView() {
     ? (analysisByMessageId[selectedMessageId] ?? null)
     : null;
 
-  const selectedMessage = supportRequests.find((m) => m.id === selectedMessageId);
+  const selectedMessage = supportRequests.find((message) => message.id === selectedMessageId);
 
   if (isLoadingSupportRequests) {
     return <div className="p-4 text-sm text-slate-600">Loading support requests...</div>;
@@ -73,8 +86,8 @@ export default function InboxView() {
       <InboxToolbar
         isAnalyzing={isAnalyzing}
         supportRequestsCount={supportRequests.length}
-        analyzedCount={Object.keys(analysisByMessageId).length}
-        batchSize={ANALYSIS_BATCH_SIZE}
+        analyzedCount={analyzedCount}
+        currentBatchSize={analysisBatch.length}
         analysisError={analysisError}
         onAnalyze={handleAnalyzeMessages}
       />

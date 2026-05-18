@@ -10,7 +10,7 @@ type UseGetSupportRequestsResult = {
   error: string | null;
 };
 
-export function useGetSupportRequests(): UseGetSupportRequestsResult {
+export function useSupportRequests(): UseGetSupportRequestsResult {
   const [supportRequests, setSupportRequests] = useState<SupportRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
