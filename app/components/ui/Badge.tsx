@@ -1,4 +1,4 @@
-import { severityBadgeClass, Severity } from "@/app/severity";
+import { severityBadgeClass, type Severity } from "@/app/components/ui/severity";
 
 export default function Badge({ value, label }: { value?: Severity; label?: string }) {
   if (!value || !label) {

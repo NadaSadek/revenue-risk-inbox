@@ -1,6 +1,6 @@
-import { severityBadgeClass } from "@/app/severity";
 import { revenueRiskLabel, urgencyLabel } from "@/lib/constants";
 import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
+import Badge from "../ui/Badge";
 
 export type SupportRequestRow = SupportRequest & {
   analysis?: RevenueRiskAnalysis;
@@ -11,19 +11,6 @@ type InboxTableProps = {
   selectedMessageId: SupportRequest["id"] | null;
   onSelectRow: (messageId: SupportRequest["id"]) => void;
 };
-
-function Badge({ value, label }: { value?: "low" | "medium" | "high"; label?: string }) {
-  if (!value || !label) {
-    return <span className="text-sm text-slate-400">—</span>;
-  }
-
-  return (
-    <span
-      className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ring-1 ${severityBadgeClass[value]}`}>
-      {label}
-    </span>
-  );
-}
 
 export default function InboxTable({
   enrichedSupportRequests,
@@ -52,10 +39,7 @@ export default function InboxTable({
                 Revenue Risk
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Review
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                AI Status
+                Triage
               </th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
                 Received
@@ -79,7 +63,7 @@ export default function InboxTable({
                         event.stopPropagation();
                         onSelectRow(request.id);
                       }}
-                      className="block text-left text-sm font-medium leading-6 text-slate-950 hover:text-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                      className="block text-left text-sm font-medium leading-6 text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                       {request.subject}
                       <span className="sr-only">
                         Open message details for {request.customerName} at {request.companyName}
@@ -110,23 +94,16 @@ export default function InboxTable({
                   </td>
                   <td className="px-4 py-4 align-top text-sm">
                     {!request.analysis ? (
-                      <span className="text-slate-400">—</span>
+                      <span className="inline-flex rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-500 ring-1 ring-slate-200">
+                        Not analyzed
+                      </span>
                     ) : request.analysis.needsHumanReview ? (
                       <span className="inline-flex rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-200">
                         Needs review
                       </span>
                     ) : (
-                      <span className="text-slate-500">Auto-triaged</span>
-                    )}
-                  </td>{" "}
-                  <td className="px-4 py-4 align-top">
-                    {request.analysis ? (
                       <span className="inline-flex rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-200">
-                        Analyzed
-                      </span>
-                    ) : (
-                      <span className="inline-flex rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-500 ring-1 ring-slate-200">
-                        Not analyzed
+                        Auto-triaged
                       </span>
                     )}
                   </td>

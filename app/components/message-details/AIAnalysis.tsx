@@ -1,4 +1,4 @@
-import { severityBadgeClass } from "@/app/severity";
+import { severityBadgeClass } from "@/app/components/ui/severity";
 import { categoryLabel, revenueRiskLabel, urgencyLabel } from "@/lib/constants";
 import type { RevenueRiskAnalysis } from "@/lib/types";
 
@@ -26,7 +26,7 @@ function SignalItem({
 
 export default function AIAnalysis({ analysis }: { analysis: RevenueRiskAnalysis }) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <section>
         <h3 className="text-sm font-semibold text-slate-950">Summary</h3>
         <p className="mt-1 text-sm leading-6 text-slate-700">{analysis.summary}</p>

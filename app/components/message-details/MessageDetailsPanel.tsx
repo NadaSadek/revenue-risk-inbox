@@ -37,7 +37,7 @@ export function MessageDetailsPanel({ message, analysis, onClose }: MessageDetai
         <header className="flex shrink-0 items-center justify-between border-b border-slate-200 px-6 py-4">
           <div className="flex items-center gap-3">
             <h2 id="message-details-title" className="text-lg font-semibold text-slate-950">
-              Customer Support Request Details
+              Support Request
             </h2>
             {analysis?.needsHumanReview && (
               <span className="rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-200">
@@ -80,7 +80,7 @@ export function MessageDetailsPanel({ message, analysis, onClose }: MessageDetai
           </section>
         </div>
         {analysis?.needsHumanReview && (
-          <footer className="shrink-0 border-t border-slate-200 bg-white px-3 py-2">
+          <footer className="shrink-0 border-t border-slate-200 bg-white px-6 py-2">
             <ReviewActions />
           </footer>
         )}
