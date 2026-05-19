@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { analyzeSupportRequests } from "@/lib/ai/analyzeSupportRequests";
 import { analyzeSupportRequestsBodySchema } from "@/lib/ai/schema";
+import { mockAnalysisByMessageId } from "@/lib/mock-analysis";
 
 export async function POST(request: Request) {
   try {
