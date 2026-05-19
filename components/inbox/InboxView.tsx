@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { MessageDetailsPanel } from "@/app/components/message-details/MessageDetailsPanel";
+import { MessageDetailsPanel } from "@/components/message-details/MessageDetailsPanel";
 import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
 import { useSupportRequests } from "@/app/hooks/useSupportRequests";
 import { useAnalyzeSupportRequests } from "@/app/hooks/useAnalyzeSupportRequests";
-import InboxToolbar from "@/app/components/inbox/InboxToolbar";
-import InboxTable, { type SupportRequestRow } from "@/app/components/inbox/InboxTable";
+import InboxToolbar from "@/components/inbox/InboxToolbar";
+import InboxTable, { type SupportRequestRow } from "@/components/inbox/InboxTable";
 
 const ANALYSIS_BATCH_SIZE = 5;
 

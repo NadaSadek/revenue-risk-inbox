@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
-import AIAnalysis from "@/app/components/message-details/AIAnalysis";
-import ReviewActions from "@/app/components/message-details/ReviewActions";
+import AIAnalysis from "@/components/message-details/AIAnalysis";
+import ReviewActions from "@/components/message-details/ReviewActions";
 
 type MessageDetailsPanelProps = {
   message: SupportRequest;
