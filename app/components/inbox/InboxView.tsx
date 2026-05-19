@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageDetailsPanel } from "@/app/components/MessageDetailsPanel";
+import { MessageDetailsPanel } from "@/app/components/message-details/MessageDetailsPanel";
 import type { RevenueRiskAnalysis, SupportRequest } from "@/lib/types";
 import { useSupportRequests } from "@/app/hooks/useSupportRequests";
 import { useAnalyzeSupportRequests } from "@/app/hooks/useAnalyzeSupportRequests";
