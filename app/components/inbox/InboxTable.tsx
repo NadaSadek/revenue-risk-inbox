@@ -108,7 +108,17 @@ export default function InboxTable({
                       }
                     />
                   </td>
-                  <td className="px-4 py-4 align-top text-sm text-slate-500">Not reviewed</td>
+                  <td className="px-4 py-4 align-top text-sm">
+                    {!request.analysis ? (
+                      <span className="text-slate-400">—</span>
+                    ) : request.analysis.needsHumanReview ? (
+                      <span className="inline-flex rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-200">
+                        Needs review
+                      </span>
+                    ) : (
+                      <span className="text-slate-500">Auto-triaged</span>
+                    )}
+                  </td>{" "}
                   <td className="px-4 py-4 align-top">
                     {request.analysis ? (
                       <span className="inline-flex rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-200">
