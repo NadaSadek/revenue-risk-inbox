@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { analyzeSupportRequests } from "@/lib/ai/analyzeSupportRequests";
 import { analyzeSupportRequestsBodySchema } from "@/lib/ai/schema";
-import { mockAnalysisByMessageId } from "@/lib/mock-analysis";
 
 export async function POST(request: Request) {
   try {
@@ -16,6 +15,13 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "Invalid support request payload.", issues: result.error.issues },
         { status: 400 }
+      );
+    }
+
+    if (process.env.ENABLE_LIVE_AI !== "true") {
+      return NextResponse.json(
+        { error: "Live AI analysis is disabled for this demo." },
+        { status: 403 }
       );
     }
 

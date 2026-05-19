@@ -10,7 +10,7 @@ export const supportRequestSchema = z.object({
 });
 
 export const analyzeSupportRequestsBodySchema = z.object({
-  supportRequests: z.array(supportRequestSchema).min(1).max(20),
+  supportRequests: z.array(supportRequestSchema).min(1).max(5),
 });
 
 export const revenueRiskAnalysisSchema = z.object({
