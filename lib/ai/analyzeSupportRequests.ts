@@ -42,6 +42,5 @@ Category rules:
 `,
   });
 
-  console.log("Raw AI output:", JSON.stringify(output, null, 2));
   return orderAnalysesBySupportRequestIds(supportRequests, output);
 }

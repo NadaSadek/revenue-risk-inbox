@@ -2,7 +2,7 @@
 
 # Project instructions
 
-This is a Next.js + TypeScript portfolio project focused on AI-assisted revenue-risk analysis for SaaS support workflows.
+This is a Next.js + TypeScript project focused on AI-assisted revenue-risk analysis for SaaS support workflows.
 
 ## Priorities
 
