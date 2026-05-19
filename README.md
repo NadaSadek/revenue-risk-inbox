@@ -2,7 +2,7 @@
 
 An AI-assisted support triage inbox for identifying revenue-risk signals in customer messages.
 
-The app analyzes support requests and turns unstructured customer messages into structured review data: urgency, revenue risk, category, confidence, evidence, recommended next step and whether human review is required.
+The app analyzes support requests and turns unstructured customer messages into structured review data: urgency, revenue risk, category, confidence, evidence, a recommended next step and whether human review is required.
 
 ## Why this exists
 
@@ -15,10 +15,10 @@ Examples in this demo include failed payments, paid users locked out, invoice di
 1. Load sample support requests.
 2. Analyze messages in batches.
 3. Display urgency, revenue risk and triage status in the inbox.
-4. Open a support request to compare the original message with the AI review
-5. You will see:
-  - Evidence and a recommended next step.
-  - High-risk or ambiguous cases marked ad needing human review.
+4. Open a support request to compare the original message with the AI review.
+5. Review the AI output:
+   - Evidence and a recommended next step.
+   - High-risk or ambiguous cases marked as needing human review.
 
 ## Features
 
