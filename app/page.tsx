@@ -1,4 +1,4 @@
-import InboxView from "@/app/components/inbox/InboxView";
+import InboxView from "@/components/inbox/InboxView";
 
 export default function Home() {
   return (

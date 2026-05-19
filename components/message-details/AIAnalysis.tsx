@@ -1,4 +1,4 @@
-import { severityBadgeClass } from "@/app/components/ui/severity";
+import { severityBadgeClass } from "@/components/ui/severity";
 import { categoryLabel, revenueRiskLabel, urgencyLabel } from "@/lib/constants";
 import type { RevenueRiskAnalysis } from "@/lib/types";
 
