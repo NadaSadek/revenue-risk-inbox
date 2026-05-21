@@ -1,39 +1,119 @@
 # Revenue Risk Inbox
 
-An AI-assisted support triage inbox for identifying revenue-risk signals in customer messages.
+An AI-assisted review queue for triaging customer support messages by revenue risk, urgency, and human-review need.
 
-The app analyzes support requests and turns unstructured customer messages into structured review data: urgency, revenue risk, category, confidence, evidence, a recommended next step and whether human review is required.
+Live demo: https://revenue-risk-inbox.vercel.app/  
+GitHub repo: [https://github.com/NadaSadek/revenue-risk-inbox](https://nadasadek.com/articles/designing-review-queue-for-revenue-risk-support-messages/)
+
+![Revenue Risk Inbox showing analyzed customer support messages](./public/screenshots/inbox-analyzed.png)
 
 ## Why this exists
 
-This project focuses on a support-ops problem: commercially important customer messages can sit next to routine product feedback and teams need a way to prioritize the requests most likely to affect revenue, access or retention.
+Support inboxes mix routine feedback with messages that can affect revenue, access, renewals, refunds, or churn.
 
-Examples in this demo include failed payments, paid users locked out, invoice disputes, refund requests, cancellation threats, enterprise pricing questions, product bugs, account login issues, low-risk product feedback and mixed payment/access cases.
+A failed payment, a paid customer locked out of their account, and a dashboard layout suggestion should not receive the same operational priority. This project explores how structured AI output can help support teams identify which messages need faster review and why.
 
-## Demo workflow
+## What it does
 
-1. Load sample support requests.
-2. Analyze messages in batches.
-3. Display urgency, revenue risk and triage status in the inbox.
-4. Open a support request to compare the original message with the AI review.
-5. Review the AI output:
-   - Evidence and a recommended next step.
-   - High-risk or ambiguous cases marked as needing human review.
+Revenue Risk Inbox analyzes support messages and returns structured review data:
 
-## Features
+- urgency
+- revenue risk
+- category
+- confidence
+- evidence from the customer message
+- recommended next action
+- whether human review is needed
 
-- Batch AI analysis of support messages
-- Structured AI output with Zod validation
-- Revenue-risk and urgency classification
-- Triage states:
-  - Not analyzed
-  - Auto-triaged
-  - Needs review
-- Evidence snippets from the customer message
-- Recommended next operational action
-- Message detail drawer with original request and AI review
-- Order-independent AI result mapping by `messageId`
-- Contract tests for matching AI analyses to the correct support request
+The UI then displays the results in an inbox table and a detail drawer for review.
+
+## Review workflow
+
+1. The user loads sample support messages.
+2. The user analyzes messages in batches.
+3. The app displays urgency, revenue risk, and triage status.
+4. The user opens a message to compare the original request with the AI review.
+5. High-risk or ambiguous cases are marked as needing human review.
+
+![Support request detail drawer showing a paid-but-locked customer message that needs review](./public/screenshots/detail-paid-locked.png)
+
+## AI behavior
+
+The app sends support requests to a server-side API route:
+
+```txt
+POST /api/analyze-support-requests
+```
+
+Each support request includes:
+
+```ts
+{
+  id: string;
+  customerName: string;
+  companyName: string;
+  receivedAt: string;
+  subject: string;
+  body: string;
+}
+```
+
+The AI returns one structured analysis per message:
+
+```ts
+{
+  messageId: string;
+  urgency: "low" | "medium" | "high";
+  revenueRisk: "low" | "medium" | "high";
+  summary: string;
+  recommendedAction: string;
+  evidence: string[];
+  confidence: number;
+  needsHumanReview: boolean;
+  category:
+    | "failed_payment"
+    | "invoice_issue"
+    | "plan_access"
+    | "cancellation_risk"
+    | "refund_request"
+    | "enterprise_sales"
+    | "product_bug"
+    | "account_issue"
+    | "product_feedback"
+    | "other";
+}
+```
+
+The output is validated with Zod before it is used by the UI.
+
+
+## States handled
+
+The UI includes states for:
+
+- not analyzed
+- analyzing
+- partially analyzed
+- auto-triaged
+- needs review
+- empty or unavailable AI review
+
+![Revenue Risk Inbox showing partially analyzed messages and not-analyzed rows](./public/screenshots/partial-analysis.png)
+
+## Sample data
+
+The demo includes 10 realistic support messages covering:
+
+- failed payment
+- paid but locked out
+- invoice dispute
+- cancellation threat
+- refund request
+- enterprise pricing
+- product bug
+- login issue
+- low-risk product feedback
+- mixed payment/access confusion
 
 ## Tech stack
 
@@ -45,67 +125,69 @@ Examples in this demo include failed payments, paid users locked out, invoice di
 - Zod
 - Vitest
 
-## AI flow
+## Running locally
 
-The app sends a batch of support requests to the server-side API route `POST /api/analyze-support-requests`.
+Install dependencies:
 
-The route validates the request payload, calls the AI analysis function and returns structured analyses.
+```bash
+npm install
+```
 
-The AI output includes a `messageId` for every analysis item. The app does not rely on array order alone. After generation, the analyses are matched back to the original support requests by `messageId`.
+Create `.env.local`:
 
-This prevents a subtle but serious bug: valid-looking AI output being attached to the wrong customer message.
+```bash
+AI_GATEWAY_API_KEY=your_key_here
+```
 
-## Why `messageId` validation matters
+Run the development server:
 
-Structured output validates shape but it does not automatically validate relationships.
+```bash
+npm run dev
+```
 
-For example, an AI response can contain two analyses with the same `messageId`. The JSON shape may still be valid but the relationship is wrong because one message is duplicated and another message is missing.
+Open:
 
-This project includes a helper that:
-
-- rejects duplicate `messageId` values
-- rejects missing analyses
-- rejects count mismatches
-- returns analyses in the same order as the original support requests
-
-## Local setup
-
-Install dependencies with `npm install`.
-
-Create a local environment file named `.env.local`.
-
-Add your AI Gateway key:
-
-`AI_GATEWAY_API_KEY=your_key_here`
-
-Run the development server with `npm run dev`.
-
-Open `http://localhost:3000`.
+```txt
+http://localhost:3000
+```
 
 ## Available scripts
 
-- `npm run dev`
-- `npm run build`
-- `npm run lint`
-- `npm run test`
-- `npm run test:watch`
-- `npm run format`
-- `npm run format:check`
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run test
+npm run test:watch
+npm run format
+npm run format:check
+```
 
 ## Testing
 
-The current tests focus on the most important contract risk: ensuring AI analyses are matched to the correct support request.
+The tests focus on the highest-risk contract issue in the project: making sure AI analyses are matched to the correct support request.
 
-Run tests with `npm run test`.
+Run tests with:
 
-## Known limitations
+```bash
+npm run test
+```
 
-- Sample data is static and served through an API route.
-- Review actions are presentational and do not persist state yet.
-- The app analyzes messages in small batches to keep latency manageable.
-- There is no authentication, database, or production queue integration.
-- AI output quality depends on the model response and prompt constraints.
+## Limitations
+
+This is a v0 demo, not a production support system.
+
+Current limitations:
+
+- sample data is static
+- review actions do not persist yet
+- there is no authentication or user assignment
+- there is no database
+- there is no helpdesk or billing integration
+- AI output quality depends on the model response and prompt constraints
+- the app does not take billing, refund, or access actions automatically
+
 
 ## Project status
 
-This is a v0 focused on AI product UX, structured output and revenue-risk support workflows.
+This is a v0 dfocused on AI product UX, structured output and revenue-risk support workflows.
