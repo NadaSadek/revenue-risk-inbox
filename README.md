@@ -2,10 +2,11 @@
 
 An AI-assisted review queue for triaging customer support messages by revenue risk, urgency, and human-review need.
 
-Live demo: https://revenue-risk-inbox.vercel.app/  
-GitHub repo: [https://github.com/NadaSadek/revenue-risk-inbox](https://nadasadek.com/articles/designing-review-queue-for-revenue-risk-support-messages/)
+- Live demo: https://revenue-risk-inbox.vercel.app/  
+- GitHub repo: [https://github.com/NadaSadek/revenue-risk-inbox](https://nadasadek.com/articles/designing-review-queue-for-revenue-risk-support-messages/)
 
 ![Revenue Risk Inbox showing analyzed customer support messages](./public/screenshots/inbox-analyzed.png)
+
 
 ## Why this exists
 
